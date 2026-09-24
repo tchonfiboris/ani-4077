@@ -66,7 +66,7 @@ with workspace("chapitre-02"):
          objdir("%{wks.location}/Build/Obj/"
             "%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
          targetdir("%{wks.location}/Build/Lib/"
-                "%{cfg.buildcfg}-%{cfg.system}")
+            "%{cfg.buildcfg}-%{cfg.system}")
 
     # Project: exo4-le_print_dans_le_fichier_de_projet
     with project("exo4-le_print_dans_le_fichier_de_projet"):
