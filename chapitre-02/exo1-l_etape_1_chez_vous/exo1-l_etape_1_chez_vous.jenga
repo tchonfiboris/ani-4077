@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# exo1-l_etape_1_chez_vous - Jenga Project (inclus dans le workspace via include())
+
+from Jenga import *
+
+with project("exo1-l_etape_1_chez_vous"):
+    consoleapp()
+    language("C++")
+    cppdialect("C++17")
+    location(".")
+    files(["src/**.cpp", "include/**.hpp"])
