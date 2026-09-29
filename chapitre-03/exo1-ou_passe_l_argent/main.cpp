@@ -6,7 +6,8 @@
 
 int main() {
     int n;
-    if (!(std::cin >> n)) return 0;
+    if (!(std::cin >> n)) {
+        return 0;}
 
     std::vector<std::string> noms(n);
     std::vector<long long> lignes(n);
@@ -21,7 +22,7 @@ int main() {
     // Parts en millièmes : on multiplie avant de diviser
     for (int i = 0; i < n; ++i) {
         long long part = (total == 0) ? 0 : lignes[i] * 1000 / total;
-        std::cout << noms[i] << " " << lignes[i] << " " << part << "\n";
+        std::cout << noms[i] << " " << lignes[i] << " " << part << std::endl;
     }
 
     // RAPPORT en centièmes
@@ -40,8 +41,8 @@ int main() {
         }
     }
 
-    std::cout << "TOTAL " << total << "\n";
-    std::cout << "RAPPORT " << rapport << "\n";
-    std::cout << "MOITIE " << moitie << "\n";
+    std::cout << "TOTAL " << total << std::endl;
+    std::cout << "RAPPORT " << rapport << std::endl;
+    std::cout << "MOITIE " << moitie << std::endl;
     return 0;
 }
