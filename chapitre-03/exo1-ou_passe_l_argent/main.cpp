@@ -11,12 +11,14 @@ int main() {
 
     std::vector<std::string> noms(n);
     std::vector<long long> lignes(n);
-    long long total = 0, commun = 0;
+    long long total = 0; 
+    long long commun = 0;
 
     for (int i = 0; i < n; ++i) {
         std::cin >> noms[i] >> lignes[i];
-        total += lignes[i];
-        if (noms[i] == "Common") commun += lignes[i];
+        total = total + lignes[i];
+        if (noms[i] == "Common") {
+            commun = commun + lignes[i];}
     }
 
     // Parts en millièmes : on multiplie avant de diviser
@@ -33,14 +35,17 @@ int main() {
     if (total > 0) {
         std::vector<long long> tri = lignes;
         std::sort(tri.begin(), tri.end(), std::greater<long long>());
-        long long cible = total / 2, somme = 0;
+        long long cible = total / 2; 
+        long long somme = 0;
         for (long long v : tri) {
-            if (somme >= cible) break;
-            somme += v;
+            if (somme >= cible) 
+            break;
+            somme = somme + v;
             ++moitie;
         }
     }
 
+    // afficher les résultats
     std::cout << "TOTAL " << total << std::endl;
     std::cout << "RAPPORT " << rapport << std::endl;
     std::cout << "MOITIE " << moitie << std::endl;
