@@ -1,0 +1,7 @@
+
+sortie du programme
+
+surface : 1280x720, dpi : 1250, valide : oui
+poignee : hwnd, valeur : 0000000000870a84
+poignee : hinstance, valeur : 00007ff72bad0000
+images : 11036

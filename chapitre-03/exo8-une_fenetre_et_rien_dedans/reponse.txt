@@ -1,0 +1,21 @@
+
+Ma plateforme et ses poignees :
+Le code utilise Win32, donc la plateforme est Windows
+mon programme contient deux poignee dont hwnd : 
+la poignée de la fenêtre, distribuée par le gestionnaire 
+de fenêtres de Windows. et hinstance Elle sert à dire à quel 
+programme appartient la classe de fenêtre et la fenêtre.
+
+
+
+Ce qui se passe si j'enleve la pompe :
+Sans la pompe, le programme continue de tourner, mais 
+la fenêtre est morte : plus personne ne lit les messages
+que Windows lui envoie. la fenere est oblige de se fermer
+de maniere brusque.
+
+
+
+Ce qui se passe si je ne teste pas la validite :
+Sans le test, une fenêtre qui n'a pas pu s'ouvrir passe pour
+une fenêtre normale. Le programme continue avec un handle nul.
