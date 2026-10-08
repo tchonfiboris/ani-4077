@@ -1,0 +1,19 @@
+journal A :
+peripherique 45 0
+format 59833 603
+contexte 34000 342
+courant 2300 23
+chargement 3033 30
+PLUS CHER format
+TOTAL 99211
+IMAGES 6
+
+journal B
+peripherique 50 1
+format 8500 233
+contexte 11500 315
+courant 900 24
+chargement 15500 425
+PLUS CHER chargement
+TOTAL 36450
+IMAGES 3

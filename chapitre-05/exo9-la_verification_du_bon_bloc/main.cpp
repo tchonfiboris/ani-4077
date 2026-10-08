@@ -77,6 +77,6 @@ int main()
 
     std::cout << "BONS " << bons << std::endl;
     std::cout << "MAUVAIS " << mauvais << std::endl;
-    
+
     return 0;
 }

@@ -1,0 +1,9 @@
+Le temps le plus cher du journal A: Dans le journal A, le temps le plus
+cher est format : la pose du format de pixel.
+
+Ce que ce temps declenche vraiment : c'est le premier contact avec le 
+pilote graphique.
+
+Pourquoi on ne cree pas un contexte dans la boucle : Parce que créer 
+un contexte est la partie la plus chère de tout le cycle, et qu'une 
+boucle de rendu tourne des dizaines ou des centaines de fois par seconde.
