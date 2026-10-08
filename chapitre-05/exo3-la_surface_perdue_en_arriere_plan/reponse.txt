@@ -1,0 +1,15 @@
+     Pourquoi le mode naif accumule les erreurs : Le mode naïf 
+n'a aucun moyen de se rendre compte que sa surface a disparu,
+et donc aucun moyen de s'en remettre. Il continue à dessiner 
+sur une surface morte. la surface n'existe plus, mais la boucle
+ ne le sait pas : le système ne la prévient pas.
+
+     Pourquoi le premier MONTREE du scenario B ne suffit pas : le premier
+ MONTREE arrive trop tôt. Rattacher le programme à une surface qui n'existe
+pas n'aurait aucun sens, donc la règle l'ignore. Et comme le système ne signale
+pas le RETOUR, le programme n'a aucun moyen de savoir que la surface est revenue
+ il doit attendre le prochain MONTREE pour retenter.
+
+      Ce qui arriverait sans la pause du sommeil : Sans le sommeil, le programme
+ corrigé se comporterait comme le naïf pendant toute la période où il est détaché 
+il continuerait à lancer des IMAGE, et chacune échouerait.

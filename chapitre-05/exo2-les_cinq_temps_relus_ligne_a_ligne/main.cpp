@@ -17,7 +17,6 @@ int main()
     std::map<std::string, bool> contextes; 
     std::string courant = "";             
     int erreurs = 0;
-
     for (int i = 1; i <= n; ++i)
     {
         std::string cmd;
