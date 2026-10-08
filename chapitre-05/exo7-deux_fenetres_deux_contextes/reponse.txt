@@ -1,0 +1,11 @@
+Ce que montre la fenetre droite dans le script B :
+Elle montre noir, sa couleur de départ, et elle n'a eu aucun effacement
+(droite noir 0). dans le script B, le second COURANT ctxD est absent.
+ Le contexte courant reste ctxG jusqu'à la fin.
+
+Pourquoi la couleur orange est allee a gauche :
+Parce qu'OpenGL n'a pas de paramètre « à qui je parle » : chaque appel
+va au contexte courant, et dans le script B le contexte courant est 
+resté ctxG.
+
+Ce que le vrai OpenGL aurait dit dans le script C :

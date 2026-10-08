@@ -1,0 +1,14 @@
+SCRIPT A
+gauche orange 2
+droite noir 0
+IGNORES 1
+
+SCRIPT B
+gauche orange 2
+droite noir 0
+IGNORES 0
+
+SCRIPT C
+gauche noir 0
+droite orange 1
+IGNORES 1
