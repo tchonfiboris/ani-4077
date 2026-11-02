@@ -1,0 +1,20 @@
+Les deux carres sont-ils identiques : Non. Le cycle refermé par la vraie courbe (EXACT)
+rend chaque octet d'origine, dans les deux scénarios. Le cycle refermé par la puissance 
+1/2,2 (GAMMA) ne le fait pas : il ne retrouve l'octet d'origine que pour 3 octets sur 8 
+dans le scénario A (0, 100 et 255), et pour aucun des 5 octets du scénario B. Quant au 
+cycle ouvert (DECODE), il assombrit tout, sauf 0 et 255 : par exemple 128 devient 55 et 
+200 devient 147.
+
+D'ou vient l'ecart residuel : La courbe sRGB n'est pas une puissance pure. Elle se compose 
+d'un segment droit près du noir (pente 12,92) et d'une puissance 2,4 décalée par 0,055 
+ailleurs. L'exposant effectif de cette courbe se rapproche de 2,2 en moyenne, mais pas en 
+chaque point. On décode avec la vraie courbe puis on ré-encode avec une autre fonction : 
+les deux ne sont pas inverses l'une de l'autre, et l'écart qui reste est celui qui sépare 
+une puissance 1/2,2 de la vraie courbe inverse. L'arrondi à l'octet entier ajoute au plus 
+une demi-unité, ce qui explique les écarts de -1 vers les valeurs moyennes et hautes.
+
+Ou l'ecart est le plus grand : Dans les tons sombres. L'écart maximal vaut 8, atteint dès 
+l'octet 5 dans le scénario A et dès l'octet 3 dans le scénario B (l'octet 10 du scénario B 
+donne aussi 8). Près du noir, la vraie courbe est un segment droit alors que la puissance 
+1/2,2 monte très vite, donc GAMMA éclaircit trop : 3 devient 11 et 5 devient 13. Plus haut, 
+l'écart retombe à 0 ou -1, et il est nul à 255.

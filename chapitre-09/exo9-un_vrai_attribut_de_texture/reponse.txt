@@ -1,0 +1,25 @@
+Ce que coute le nouvel attribut : Un attribut aUv de deux floats coûte 8 octets par 
+sommet. Dans le scénario B, le pas passe de 24 octets (scénario A, position et couleur) 
+à 32 octets : c'est un tiers de plus par sommet. Pour 36 sommets, le tampon passe de 
+864 à 1152 octets, soit 288 octets de plus. Le coût est faible, il se calcule d'avance 
+(V fois 8 octets) et il reste proportionnel au nombre de sommets. Le scénario C, sans 
+couleur, donne un pas de 20 octets et un tampon de 480 octets : on peut aussi se passer 
+de la couleur quand l'objet est texturé.
+
+Pourquoi detourner la couleur est une mauvaise idee : Ranger la coordonnée de texture 
+dans deux composantes de la couleur marche tant que l'objet n'a besoin que de l'un des 
+deux. Dès qu'un objet doit avoir une vraie couleur et une texture, par exemple une teinte 
+multipliée par la texture, il n'y a plus de place : il faut changer la disposition du 
+tampon, les décalages, le pas et le nuanceur en même temps. Le nom aCouleur ment aussi 
+sur ce que contient la donnée, ce qui rend le code difficile à relire. Enfin, une couleur 
+peut être normalisée ou bornée à l'entrée, alors qu'une coordonnée de texture ne doit pas 
+l'être : le détournement se casse en silence. Pour 8 octets par sommet, un vrai attribut 
+évite tout cela.
+
+Ce que j'ai verifie dans mon propre code : Pour chaque appel à glVertexAttribPointer, 
+j'ai vérifié trois choses : que le troisième nombre (le pas, en octets) est le même pour 
+tous les attributs d'un même tampon et vaut la somme des composantes fois 4 ; que le 
+décalage de chaque attribut est la somme des tailles de ceux qui le précèdent, comme dans 
+les sorties ci-dessus (12 pour la couleur, 24 pour aUv dans le scénario B) ; et que chaque 
+location passée à glVertexAttribPointer et à glEnableVertexAttribArray correspond à la 
+location déclarée dans le nuanceur.

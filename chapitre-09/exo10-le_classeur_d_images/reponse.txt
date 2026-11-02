@@ -1,0 +1,25 @@
+Comment ma classe sait si une image est une couleur : Elle ne regarde pas l'image, 
+seulement son nom. Elle prend le mot qui suit le dernier souligné et le compare à une 
+liste de cinq mots de données : normal, rugosite, hauteur, metal et occlusion. Si le mot 
+est dans la liste, l'image est déclarée LINEAIRE, puisque ses valeurs sont des mesures 
+et non des couleurs. Dans tous les autres cas, y compris un nom sans souligné, elle 
+est déclarée SRGB, c'est-à-dire traitée comme une couleur. Le choix se fait une seule 
+fois, à la création, et les réutilisations suivantes gardent cet espace.
+
+Une image que ma regle classe mal : Dans le scénario B, visage_normalise se termine par 
+le mot normalise, qui n'est pas dans la liste. La règle la classe SRGB. Si c'est une carte 
+de normales, ses valeurs seront décodées par la courbe sRGB à la lecture et les vecteurs 
+seront déformés, sans aucun message d'erreur. Le même problème apparaît avec brique_Normal 
+(majuscule), brique_normal_v2 (le dernier mot est v2), brique_nrm, ou n'importe quelle 
+carte de données dont le nom ne suit pas la convention, ainsi qu'avec une carte de 
+normales sans souligné comme normales.png. L'erreur inverse existe aussi : une vraie 
+couleur dont le nom finit par hauteur ou metal serait déclarée linéaire.
+
+Ce que je ferais a la place : Je ne déduirais pas l'espace de couleur du nom. Je le ferais 
+passer en paramètre explicite à chaque demande, par exemple DEMANDE nom SRGB ou DEMANDE 
+nom LINEAIRE, ou je le lirais dans un fichier de description du matériau qui dit pour 
+chaque image son rôle (couleur de base, normales, rugosité). Le classeur garderait ensuite 
+cet espace avec la texture. Si le même nom est redemandé avec un espace différent, il signal
+erait le conflit au lieu de réutiliser la texture sans rien dire. La convention de nommage 
+peut rester comme valeur par défaut pratique, mais elle ne devrait jamais être la seule 
+source de vérité.
