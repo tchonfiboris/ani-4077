@@ -31,3 +31,10 @@ with workspace("chapitre-10"):
         cppdialect("C++17")
         location("exo1-inverser_l_ordre")
         files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo2-tuer_une_image_sur_deux
+    with project("exo2-tuer_une_image_sur_deux"):
+        consoleapp()
+        language("C++")
+        location("exo2-tuer_une_image_sur_deux")
+        files(["**.cpp", "include/**.hpp"])
