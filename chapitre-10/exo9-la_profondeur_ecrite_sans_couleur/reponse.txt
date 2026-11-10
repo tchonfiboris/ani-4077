@@ -1,0 +1,31 @@
+Le nom de cette technique :
+C'est la pré-passe de profondeur (depth pre-pass, aussi appelée Z pre-pass 
+ou early-Z pass). Une première passe, couleur masquée, ne fait qu'écrire la 
+profondeur. Une seconde passe redessine la scène en couleur, et le nuanceur 
+coûteux ne tourne alors que sur le fragment visible de chaque pixel : dans le 
+scénario A, il tourne 48 fois au lieu de 92.
+
+Pourquoi LEQUAL et pas LESS :
+Après la passe 1, le tampon de profondeur contient déjà, à chaque pixel, le 
+z du fragment visible. Quand la passe 2 redessine ce même fragment, son z est 
+égal à la valeur stockée, et non strictement plus petit. En GL_LESS, rien ne 
+passe : la ligne PASSE 2 EN LESS NUANCEUR vaut 0 dans les trois scénarios, donc 
+le nuanceur ne tournerait jamais et l'image resterait vide. GL_LEQUAL laisse 
+passer l'égalité et ne laisse passer que le fragment visible, puisque les fragments 
+cachés ont un z strictement plus grand. Cela suppose que les deux passes calculent 
+exactement le même z pour un même fragment, sinon des trous apparaissent là où les 
+valeurs diffèrent d'un cheveu.
+
+Quand elle ne paie pas :
+Le gain vaut (a - c) * F - b * P - N * S : le nuanceur économisé, moins la 
+profondeur ajoutée, moins le second envoi des objets. Dans le scénario A, les 
+rectangles se recouvrent beaucoup et arrivent du plus loin au plus proche : 44 
+fragments de nuanceur sont évités, soit 880, pour 92 + 120 de surcoût, et le 
+gain est de 668. Dans le scénario B, les rectangles ne se recouvrent pas : a et c 
+valent tous les deux 48, rien n'est économisé, et la pré-passe coûte 168 de plus. 
+Dans le scénario C, ce sont les mêmes objets que A, mais dessinés du plus proche au 
+plus lointain : la passe unique en GL_LESS rejette déjà les fragments cachés avant 
+le nuanceur (a = 48), et la pré-passe, qui ajoute 92 fragments de profondeur et un 
+second envoi, perd 212. La pré-passe ne paie donc pas quand il y a peu de recouvrement, 
+quand l'ordre de dessin est déjà du proche au lointain, ou quand le nuanceur est bon 
+marché devant le coût de la passe supplémentaire.

@@ -73,3 +73,24 @@ with workspace("chapitre-10"):
         language("C++")
         location("exo7-l_ordre_compte_encore_pour_la_vitesse")
         files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo8-deux_cibles_enchainees
+    with project("exo8-deux_cibles_enchainees"):
+        consoleapp()
+        language("C++")
+        location("exo8-deux_cibles_enchainees")
+        files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo9-la_profondeur_ecrite_sans_couleur
+    with project("exo9-la_profondeur_ecrite_sans_couleur"):
+        consoleapp()
+        language("C++")
+        location("exo9-la_profondeur_ecrite_sans_couleur")
+        files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo10-une_cible_plus_grande_que_la_fenetre
+    with project("exo10-une_cible_plus_grande_que_la_fenetre"):
+        consoleapp()
+        language("C++")
+        location("exo10-une_cible_plus_grande_que_la_fenetre")
+        files(["**.cpp", "include/**.hpp"])

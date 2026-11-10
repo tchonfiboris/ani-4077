@@ -1,0 +1,25 @@
+Combien de changements de cible par image :
+Une image qui passe par des cibles hors écran coûte au minimum un changement de cible par 
+cible distincte dessinée, retour final vers FENETRE compris. Tant que chaque cible est 
+dessinée d'un seul bloc, cela fait autant de changements que de passes. Le scénario A le 
+montre : SCENE, INVERSE puis FENETRE donnent 3 passes et 3 CHANGEMENTS. Le scénario C, qui 
+dessine OMBRE, SCENE puis FENETRE, en compte 3 aussi. Le scénario B dessine les mêmes choses 
+en alternant SCENE et OMBRE, et il en compte 6, le double du minimum, parce que chaque retour 
+sur une cible déjà vue ouvre une nouvelle passe.
+
+Ce que l'effacement epargne :
+Un dessin qui commence par un glClear complet n'a pas besoin du contenu précédent de la cible, 
+donc la puce n'a rien à relire en mémoire principale pour remplir sa mémoire rapide : CHARGE vaut 0. 
+Dans le scénario B, les trois passes qui commencent par GARDE (SCENE, OMBRE, SCENE) relisent chacune 
+toute leur cible, ce qui fait LUS = 11567104 octets. Dans A et C, LUS vaut 0. L'effacement n'épargne 
+en revanche aucune écriture : chaque passe écrit toute sa cible en finissant, effacée ou non, et ECRIT 
+reste L * H * 4.
+
+Pourquoi regrouper les dessins par cible :
+B et C dessinent les mêmes choses (SCENE trois fois, OMBRE deux fois, FENETRE une fois), mais B 
+fait 6 passes pour un TOTAL de 34701312 octets (23134208 écrits et 11567104 relus), et C fait 3 
+passes pour un TOTAL de 11567104 octets, trois fois moins. Chaque passe écrit toute sa cible, même 
+si on y a peu dessiné, et une passe qui reprend une cible après une interruption doit en plus la relire. 
+Dessiner tout ce qui va sur une cible d'un seul trait, avec un seul glClear au début, ne coûte qu'une 
+écriture et aucune relecture. Il faut seulement que le nouvel ordre respecte les dépendances : ici l'ombre 
+doit être prête avant la scène qui la lit.

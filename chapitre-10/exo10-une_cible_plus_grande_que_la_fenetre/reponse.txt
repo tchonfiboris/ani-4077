@@ -1,0 +1,41 @@
+Ce que j'ai invente sans le savoir :
+Rendre la scène dans une cible plus grande que la zone d'affichage, 
+puis l'afficher réduite, c'est du suréchantillonnage (SSAA, supersampling 
+anti-aliasing) : chaque pixel affiché moyenne plusieurs échantillons 
+rendus, ce qui adoucit les bords en escalier. Le scénario B en est le 
+cas d'école : 2560x1440 affiché sur 1280x720 donne un RAPPORT de 400, soit 
+exactement 2x2 échantillons par pixel. Cela se paie en pixels et en mémoire : 
+29491200 octets pour la couleur et la profondeur, et 221184000 FRAGMENTS PAR 
+SECONDE à 60 images par seconde, quatre fois le travail de la fenêtre seule. Le 
+scénario A pousse l'idée plus loin (RAPPORT 1820, 25165824 octets), et le scénario 
+C fait l'inverse : une cible plus petite que la zone (SENS AGRANDISSEMENT) n'adoucit 
+rien, elle floute.
+
+Pourquoi une seule lecture filtree ne suffit pas :
+Une lecture bilinéaire, sans mipmaps, ne lit que quatre texels autour 
+du point visé, quelle que soit la taille de la cible. Dans le scénario 
+B, quatre texels couvrent exactement le bloc 2x2 qui correspond à un 
+pixel affiché : TEXELS IGNORES vaut 0, et la lecture fait une vraie moyenne. 
+Dans le scénario A, la cible compte 1820 pour cent des pixels de la zone : 921600 
+texels sont lus et 3272704 sont ignorés, soit 78 pour cent de la cible, qui 
+a été calculée et stockée pour rien. L'image est alors encore crénelée et 
+scintille dès que la scène bouge. Une lecture bilinéaire ne suffit donc que jusqu'à 
+une réduction d'un facteur 2 par axe. Au-delà, il faut des mipmaps (glGenerateMipmap 
+puis un filtre MIN en LINEAR_MIPMAP_LINEAR), une réduction en plusieurs passes qui 
+divisent la taille par deux, ou un nuanceur qui lit davantage de texels.
+
+Ce que j'ai mesure ou ce qu'il faudrait mesurer :
+Je n'ai pas mesuré d'images par seconde réelles : ce que le programme 
+donne, ce sont des quantités calculées (pixels, octets, fragments par 
+seconde demandés pour tenir F images par seconde), pas des durées. Pour 
+mesurer les images par seconde, il faut rendre la même scène, avec la 
+même fenêtre, dans une petite cible puis dans une grande (par exemple 
+1280x720 et 2560x1440). On désactive la synchronisation verticale, sinon 
+le résultat reste bloqué à la fréquence de l'écran (glfwSwapInterval(0) 
+avec GLFW). On laisse chauffer quelques dizaines d'images, puis on moyenne 
+le temps d'image sur plusieurs centaines d'images, avec std::chrono après un 
+glFinish, ou avec une requête GL_TIME_ELAPSED qui mesure le temps passé sur la 
+carte. Si la scène est limitée par le remplissage des pixels, le temps d'image 
+doit croître à peu près comme le nombre de pixels de la cible (un facteur 4 entre 1280x720 et 2560x1440).
+Si la mesure grimpe moins vite, le goulot est ailleurs, par exemple dans l'envoi des
+objets ou dans le processeur.
