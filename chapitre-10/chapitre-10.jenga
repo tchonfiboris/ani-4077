@@ -52,3 +52,24 @@ with workspace("chapitre-10"):
         language("C++")
         location("exo4-casser_une_cible_expres")
         files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo5-le_viewport_oublie
+    with project("exo5-le_viewport_oublie"):
+        consoleapp()
+        language("C++")
+        location("exo5-le_viewport_oublie")
+        files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo6-le_combat_de_profondeur_provoque
+    with project("exo6-le_combat_de_profondeur_provoque"):
+        consoleapp()
+        language("C++")
+        location("exo6-le_combat_de_profondeur_provoque")
+        files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo7-l_ordre_compte_encore_pour_la_vitesse
+    with project("exo7-l_ordre_compte_encore_pour_la_vitesse"):
+        consoleapp()
+        language("C++")
+        location("exo7-l_ordre_compte_encore_pour_la_vitesse")
+        files(["**.cpp", "include/**.hpp"])
