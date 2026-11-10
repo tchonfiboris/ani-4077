@@ -38,3 +38,17 @@ with workspace("chapitre-10"):
         language("C++")
         location("exo2-tuer_une_image_sur_deux")
         files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo3-la_fonction_de_comparaison
+    with project("exo3-la_fonction_de_comparaison"):
+        consoleapp()
+        language("C++")
+        location("exo3-la_fonction_de_comparaison")
+        files(["**.cpp", "include/**.hpp"])
+
+    # Project: exo4-casser_une_cible_expres
+    with project("exo4-casser_une_cible_expres"):
+        consoleapp()
+        language("C++")
+        location("exo4-casser_une_cible_expres")
+        files(["**.cpp", "include/**.hpp"])
