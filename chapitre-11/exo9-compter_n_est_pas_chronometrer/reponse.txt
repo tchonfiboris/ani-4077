@@ -1,0 +1,26 @@
+Pourquoi les deux pourcentages different : le compteur donne le même poids à toutes les liaisons, 
+le chronomètre non. Au scénario A, l'ordre regroupé retire 52 liaisons sur 120, soit 43 %, mais 
+ce sont 28 liaisons de programme et 24 de texture. Les 60 liaisons de tableau, les moins chères, 
+ne bougent pas, et les 30 dessins coûtent autant dans les deux ordres : 45000 ns sur le BUREAU, 
+120000 ns sur le MOBILE. Ce coût fixe dilue l'économie : le BUREAU gagne 35 % de temps (ECART -8) et 
+le MOBILE 39 % (ECART -4). Au scénario B, il y a moitié moins de liaisons de tableau, donc l'économie de 
+liaisons monte à 57 %, mais les dessins pèsent toujours autant : le temps ne gagne que 36 % et 40 %, et 
+l'écart se creuse à -21 et -17. Un pourcentage de liaisons n'est donc pas un pourcentage de temps, et 
+l'écart est plus grand quand les dessins et les liaisons peu coûteuses dominent le total.
+
+Ce que j'ai chronometre chez moi : [A COMPLETER avec mes propres mesures : ce paragraphe ne peut pas 
+être rempli sans lancer NkChrono sur ma machine.]
+Machine : [processeur, carte graphique, système]
+Temps d'une image en ordre de création (moyenne sur 1000 images) : [... ]
+Temps d'une image en ordre regroupé (moyenne sur 1000 images) : [... ]
+Économie de temps mesurée : [... ] %, à comparer aux 43 % de liaisons du scénario A.
+
+Ce qu'une liaison coute de chaque cote : les coûts de l'exercice sont des hypothèses, pas des mesures. 
+Sur le BUREAU, une liaison coûte 800 ns pour un programme, 300 ns pour une texture et 100 ns pour un 
+tableau. Sur le MOBILE, elle coûte 2400, 1200 et 300 ns : trois fois plus pour le programme et le tableau, 
+quatre fois plus pour la texture, alors que le dessin ne coûte que 2,7 fois plus (1500 contre 4000 ns). 
+Le compteur, lui, est le même des deux côtés : 120 liaisons contre 68 au scénario A. Les temps diffèrent 
+(84000 contre 246000 ns à la création), et l'économie de temps aussi, car le MOBILE paie plus cher exactement 
+les liaisons de programme et de texture que l'ordre regroupé supprime : il économise 96000 ns sur 246000 (39 %), 
+le BUREAU 29600 sur 84000 (35 %). Le compteur dit ce que le code fait, il ne dit pas ce que ça coûte : il faut le 
+chronomètre, sur la machine visée, pour le savoir.

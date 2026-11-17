@@ -1,0 +1,25 @@
+Ce que le tri remplace : les deux boucles imbriquées. Elles parcouraient les programmes 
+utilisés en ordre croissant, puis, pour chacun, ses textures en ordre croissant, et 
+relisaient la liste des objets à chaque tour. Ce code regroupe par programme puis par texture, 
+et rien d'autre : son ordre est écrit dans la structure même des boucles.
+
+Ce que la version triee permet : accepter n'importe quelle clé. Changer le regroupement 
+revient à changer une comparaison dans le tri, sans toucher au parcours, qui reste unique : 
+on lie P quand il change, T quand P ou T change, et on dessine. Avec la clé PT, le tri stable 
+redonne exactement l'ordre des boucles imbriquées : au scénario A, les deux versions comptent 
+20 liaisons dont 20 utiles, et UTILES GAGNEES vaut 0. Avec la clé PTM, le scénario B passe de 
+12 à 9 liaisons utiles (UTILES GAGNEES 3) : le nombre de liaisons reste 13, mais le tri par maillage 
+regroupe les objets qui partagent un maillage, et le compteur voit trois changements d'état de moins.
+
+Quand la troisieme cle coute : au scénario C, la clé PTM fait perdre une liaison inutile. 
+Le compte reste identique (13 liaisons dans les deux versions, MEME COMPTE OUI), mais les 
+liaisons utiles passent de 11 à 12 : UTILES GAGNEES vaut -1. Dans l'ordre imbriqué, la suite 
+des maillages est 2, 1, 2, 1, 1, 1, 2 : mur (maillage 1) termine le dernier groupe du programme 
+1 et eau (maillage 1) ouvre le programme 2, si bien que eau et roc reposent le maillage déjà lié, 
+deux liaisons inutiles. Le tri par maillage donne 1, 2, 1, 2, 1, 1, 2 : à l'intérieur de chaque 
+groupe il range les maillages en ordre croissant, donc le groupe du programme 1 finit sur le maillage 
+2 (arbre), et eau doit relier le maillage 1. Seule la liaison de roc reste inutile. Le tri ne regarde 
+que l'intérieur de chaque groupe, jamais la jonction entre deux groupes : il ne sait pas qu'un groupe 
+pourrait finir sur le maillage par lequel le suivant commence. Une clé de plus n'est donc un gain que 
+si elle rapproche des objets semblables à l'intérieur du groupe sans défaire une coïncidence à la 
+frontière, et seul le compteur le dit.

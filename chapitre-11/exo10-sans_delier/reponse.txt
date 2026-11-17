@@ -1,0 +1,19 @@
+Pourquoi l'image ne change pas : un dessin lit l'état du tableau qu'il vient de lier, pas 
+celui du tableau lié avant lui. Délier après chaque dessin ne modifie donc rien à ce qui 
+est tracé : aux scénarios A et B, les dessins 1 et 2 sont JUSTE dans les deux cas. La seule 
+différence est le nombre d'appels : 10 avec déliage, 7 sans, soit un appel de moins par dessin, 
+trois dessins donc trois appels.
+
+Ce que le deliage protege : le tampon d'index lié fait partie de l'état du tableau lié. Tant 
+qu'un tableau reste lié, tout code qui lie un tampon d'index pour y écrire modifie ce tableau 
+sans le savoir. Délier après chaque dessin ramène le tableau lié à 0 : au scénario A, TELEVERSE 
+13 trouve le tableau 0 et ne change rien, donc les tableaux 1 et 2 gardent leurs tampons d'index 
+11 et 12 (CORROMPUS 0, FAUX 0). Un tableau délié est hors d'atteinte du code qui ne passe pas par le cache.
+
+Le cas ou son absence casse : au scénario B, DESSINE 1 laisse le tableau 1 lié. TELEVERSE 13 
+lie alors le tampon d'index 13 dans ce tableau, dont l'index passe de 11 à 13 alors qu'il 
+devrait rester 11. Le dessin 2 reste JUSTE, parce qu'il relie le tableau 2 et ne lit pas le 
+tableau 1 : la corruption ne se voit pas tout de suite. Le dessin 3 relit le tableau 1 et sort 
+FAUX INDEX 13/11 : CORROMPUS 1, FAUX 1. L'absence de déliage a donc économisé 3 appels (10 contre 7) 
+au prix d'un dessin faux. Pour garder l'économie, il faut délier au moins avant le code externe qui 
+écrit un tampon d'index, ou refaire lier le tampon d'index attendu avant le dessin.
