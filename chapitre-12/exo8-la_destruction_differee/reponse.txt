@@ -1,0 +1,23 @@
+Mon choix : la poignée doit mourir au retrait, comme dans le monde A. Celui qui retire une ressource 
+ne doit plus pouvoir s'en servir : l'attente avant la destruction réelle est un détail du moteur, qui 
+garde l'objet pour les images encore en cours, et le code appelant n'a pas à la voir. Avec ce choix, 
+une poignée utilisée après le retrait est refusée au moment même de la faute. La case de la réserve se 
+libère aussi tout de suite, pendant que la ressource réelle attend dans la file : le numéro de case et 
+l'objet sont deux choses séparées, et l'objet n'est détruit qu'à l'échéance.
+
+Ce que l'autre choix ne voit pas : dans le monde B, la poignée reste bonne pendant tout le délai, et 
+l'usage après retrait passe sans erreur. Au scénario A, les deux VOIR après le retrait de t rendent 
+herbe dans le monde B : DETECTEES A 2 B 0, alors que le monde A signale les deux. Au scénario C, avec 
+un délai de 0, le premier VOIR après le retrait rend encore herbe dans B, et seul le second est refusé : 
+DETECTEES A 2 B 1. Le monde B ne voit la faute qu'après la destruction réelle, c'est-à-dire trop tard, ou j
+amais si l'erreur se produit pendant le délai. Il gaspille aussi des cases : au scénario B, les cases des 
+ressources en attente ne se libèrent pas, et la réserve passe à 4 cases contre 2 pour le monde A (CASES A 2 B 4). 
+Le monde A recycle la case vite, mais la génération empêche l'ancienne poignée de désigner la nouvelle ressource : 
+au scénario B, VOIR b donne PERIMEE dans A même si bois occupe maintenant la case de pierre.
+
+Pourquoi OpenGL s'en passe : avec OpenGL, le programme n'a pas à tenir sa propre file. Quand il supprime 
+un objet, comme avec glDeleteTextures, le nom devient invalide pour lui tout de suite, et c'est le pilote 
+qui garde l'objet réel tant que des commandes déjà envoyées l'utilisent. La file de destruction différée 
+existe donc, mais côté pilote, et le programme voit le comportement du monde A sans rien écrire. Dans les 
+interfaces plus bas niveau, comme Vulkan ou Direct3D 12, le pilote ne fait pas ce suivi : c'est au programme 
+de retenir la ressource pendant les images en cours, et la file simulée ici devient son travail.

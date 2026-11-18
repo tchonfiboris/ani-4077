@@ -1,0 +1,21 @@
+Ou je garde les noms : dans une table à part, indexée par la poignée complète (numéro de case, génération). 
+Chaque CREER y inscrit le nom créé avec la poignée rendue, et rien ne l'efface. Quand une poignée n'est 
+plus bonne, la table sait encore ce qu'elle désignait, et la réserve dit en plus ce qui occupe la case 
+aujourd'hui : au scénario A, VOIR 0 1 répond PERIMEE herbe CASE visage.
+
+Pourquoi pas dans la ressource : la ressource est détruite en même temps que la poignée meurt, et son nom 
+part avec elle. Quand on regarde une poignée périmée, il ne reste plus rien à interroger : au scénario A, 
+juste après DETRUIRE 0 1, la case 0 est VIDE. La case de la réserve ne convient pas non plus, car elle ne 
+retient que le nom de son occupant actuel. Au scénario A, la création de visage écrase herbe dans la case 0 ; 
+au scénario B, la case 0 a servi à a puis à c, et une seule place ne peut pas redonner a pour (0, 1) et c 
+pour (0, 2). La poignée complète distingue les occupants successifs d'une même case, et la table à part est 
+le seul des trois endroits qui les garde tous.
+
+Ce que coute ma table : une entrée par poignée rendue depuis le début, jamais retirée. Sa taille suit le 
+nombre de créations, pas le nombre de ressources vivantes : 3 noms gardés pour 2 cases au scénario A, 4 
+pour 2 cases au scénario B (une seule ressource vit encore à la fin), 2 pour 1 case au scénario C. Sur un 
+programme qui crée et détruit des textures pendant des heures, elle grossit sans fin. Le coût se paie surtout 
+à la création, par une insertion avec copie du nom ; un VOIR avec une poignée bonne ne la consulte pas, seul 
+un échec la lit. C'est donc un prix acceptable pour une version de débogage, avec par exemple une taille 
+limitée qui oublie les plus vieilles entrées, mais pas pour du code de production qui voudrait garder la 
+table pour toujours.
