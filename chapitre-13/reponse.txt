@@ -1,0 +1,22 @@
+Pourquoi l'ordre compte :
+Le melange alpha combine la couleur entrante (source) et la couleur deja presente 
+sur le pixel (destination). Comme l'operation (v * fs + ancien * fd) / 100 n'est 
+pas commutative en general avec ALPHA et UNMOINSALPHA, modifier la valeur courante 
+en premier change les valeurs destinations utilisees pour les fragments suivants. 
+Dans le scenario A, l'ordre donne produit 72 alors que l'ordre inverse et le tri 
+arriere-avant produisent tous deux 78.
+
+Ce que la profondeur ne regle plus :
+Le tampon de profondeur permet seulement de rejeter ce qui est derriere la surface 
+opaque la plus proche (ici ombre a z = 70 est cache par la profondeur opaque 60, 
+soit 1 fragment cache). Pour les fragments transparents situes devant (vitre a z = 40 
+et brume a z = 30), le test de profondeur ne suffit plus a garantir un resultat independant 
+de l'ordre : il faut trier de l'arriere vers l'avant pour composer correctement les couches 
+transparentes.
+
+Quand l'ordre ne compte pas :
+L'ordre ne change pas le resultat lorsque l'operation de melange est commutative ou 
+sature la borne commune, ou lorsqu'aucun fragment transparent visible ne se chevauche 
+avec un melange non commutatif. Dans le scenario B, avec les facteurs ALPHA et UN, chaque 
+fragment qui passe ajoute v * a / 100 a la couleur courante et la somme depasse 255 quel 
+que soit l'ordre, ce qui ramene DONNE, INVERSE et ARRIERE AVANT a 255.

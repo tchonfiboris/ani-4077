@@ -1,0 +1,20 @@
+Ce que le tri economise :
+Regrouper les commandes par programme puis par texture reduit les changements d'etat en cache. 
+Dans les trois scenarios, passer de l'ordre soumis a l'ordre trie (fond, porte, ciel, mur) 
+fait passer les liaisons emises de 8 a 7 en evitant des re-liaisons repetees lorsque le programme 
+ou la texture restent identiques d'une commande a la suivante.
+
+Quand le tri est permis :
+Le tri est permis lorsque l'ordre d'execution des commandes qui se chevauchent ne modifie pas 
+le resultat final sur les pixels. Avec le test de profondeur actif (z strictement inferieur a 
+la profondeur stockee) et des profondeurs distinctes sur les recouvrements comme dans le scenario 
+A, chaque pixel conserve finalement le fragment le plus proche, ce qui rend l'image finale identique 
+(0 pixel different).
+
+Quand il est interdit :
+Le tri est interdit des que l'ordre relatif de deux commandes recouvrantes change le resultat 
+final. Dans le scenario B, sans test de profondeur (TEST 0), la derniere commande emise ecrase 
+les precedentes : ciel (0..7, couleur 4) passe apres mur (2..5, couleur 2) dans l'ordre soumis mais 
+avant mur dans l'ordre trie, modifiant 4 pixels. Dans le scenario C, malgre TEST 1, mur et porte ont 
+la meme profondeur z = 40 sur les colonnes 3 et 4 avec un test strict z < profondeur : l'ordre d'arrivee 
+determine lequel ecrit en premier et bloque l'autre, ce qui fait diverger 2 pixels.

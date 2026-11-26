@@ -1,0 +1,18 @@
+Ce qui disparait :
+Dans le scenario A, la passe monde sans plafond accepte les 3 objets (sol, arbre, roc), 
+et la passe interface limitee a 2 dessins garde barre et carte tout en refusant bouton et 
+texte (5 acceptes, 2 refuses). Dans le scenario B, la passe monde plafonnee a 2 accepte 
+sol et arbre mais perd roc, tandis que l'ordre d'arrivee dans interface (texte, bouton, barre, carte) 
+fait survivre texte et bouton et disparaitre barre et carte, pour un total de 4 acceptes et 3 refuses.
+
+Pour ce champ :
+Un plafond par passe borne le cout maximal d'une image quand une scene ou un script produit
+trop de commandes. Il empeche l'emballement des soumissions et rend le temps d'execution 
+ou le volume de donnees plus previsible.
+
+Contre ce champ :
+Ce champ coupe arbitrairement les derniers dessins soumis selon l'ordre d'emission, sans 
+tenir compte de l'importance visuelle ou fonctionnelle de l'objet. Dans une interface graphique, 
+tronquer une passe par ordre d'arrivee peut faire disparaitre des elements critiques 
+comme une barre, une carte ou un bouton au profit d'un element secondaire, ou masquer un vrai 
+bug de generation de commandes.
