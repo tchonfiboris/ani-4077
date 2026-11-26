@@ -1,0 +1,19 @@
+Ce que la scene a ajoute :
+La scene a ajoute une seconde boucle de passe (PASSE MEDAILLON) filtrant les seuls objets 
+MONDE et appliquant une seconde camera (CX, CY, Z) avant le test de visibilite dans [-L, L], 
+tout en conservant le filtrage des objets INTERFACE dans la passe principale. Cela multiplie 
+les calculs de transformation et d'elimination par le nombre de passes actives sans introduire 
+de notion de camera dans les commandes emises.
+
+Ce que le RHI aurait du apprendre :
+Si le RHI tenait les cameras, il devrait connaitre la definition des cameras actives de 
+l'image (principale et medaillon) ainsi que les regles d'application selon la nature de 
+l'objet ou les drapeaux d'exception. Chaque passe devrait porter la camera ou le contexte 
+de vue a utiliser, et chaque commande devrait preciser quelle camera lui est associee ou 
+si elle doit l'ignorer (cas de l'interface).
+
+Ce qui grossit :
+Les commandes et les structures de passe grossissent avec l'identifiant ou les parametres 
+de camera a transporter, et le cache d'etat du RHI doit suivre les changements de camera 
+entre commandes et entre passes. A l'inverse, lorsque la scene applique la camera en amont 
+et elimine ce qui est hors champ, seules les commandes visibles sont transmises.

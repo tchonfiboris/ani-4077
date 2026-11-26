@@ -1,0 +1,20 @@
+Mon banc fautif :
+La ligne fautive FAUTE vec3 lumierePos = vec3(1.0f); eprouve le motif [Ll]umiere 
+du scenario C, qui n'etait couvert par aucune ligne fautive dans le banc initial. 
+Si l'on ajoute cette ligne au banc du scenario C, retirer [Ll]umiere fait passer 
+BANC FAUTES TROUVEES de 3 SUR 3 a 2 SUR 3, fait echouer le banc et donne SANS 
+[Ll]umiere PERD 1.
+
+Les verifications jamais vues echouer :
+Dans le scenario A, le motif Camera a PERD 0 car la seule ligne contenant Camera 
+(bool ignorerCamera = false;) est deja detectee par [Cc]amera. Dans le scenario C, 
+[Ll]umiere a egalement PERD 0 parce qu'aucune ligne fautive du banc ne contient 
+lumiere ou Lumiere. Un motif non eprouve peut etre errone ou inutile sans qu'aucun 
+test rouge ne le signale.
+
+Ce que je change dans ma facon de tester :
+J'exige qu'un banc de test soit non seulement vert (BANC PASSE), mais aussi sensible : 
+chaque motif actif doit avoir au moins une ligne fautive qui lui est propre (PERD >= 1) 
+et chaque motif doit etre exerce sur au moins une ligne fautive de reference. De plus, 
+j'ajoute des lignes saines contenant des sous-chaines pieges (comme reglage ou angle 
+dans le scenario B) afin de verifier que les motifs ne produisent pas de faux positifs.

@@ -1,0 +1,21 @@
+Ma regle :
+La regle interdit a un fichier donne d'atteindre, directement ou par inclusion 
+transitive via d'autres en-tetes, une liste d'en-tetes cibles. Le parcours en 
+largeur depuis le fichier verifie suit les inclusions en ignorant les fichiers 
+deja visites et les en-tetes absents, puis signale chaque cible atteinte comme 
+DIRECT ou CACHEE avec son premier chemin d'acces.
+
+Pourquoi corriger le code et non la regle :
+Dans le scenario A, main.cpp n'inclut pas Texture.h directement, mais il inclut 
+Scene.h qui inclut Texture.h (CACHEE Texture.h PAR Scene.h > Texture.h). Assouplir 
+ou retirer Texture.h de la regle masquerait la fuite de dependance au lieu de la 
+supprimer. Pour que le scenario A passe, il faut corriger le code : retirer l'inclusion 
+de Texture.h dans Scene.h (ou deplacer la dependance vers un en-tete sans dependance interdite) 
+afin que main.cpp n'atteigne plus Texture.h.
+
+Ce que ma regle ne voit toujours pas :
+Le graphe des directives #include ne capte pas les inclusions conditionnelles sous 
+#ifdef/#ifndef qui peuvent etre actives ou inactives selon la configuration de 
+compilation, ni les liens entre un en-tete .h et son fichier d'implementation .cpp, 
+ni les appels indirects via des pointeurs de fonction, des fabriques ou des symboles 
+lies au moment de l'edition de liens.
